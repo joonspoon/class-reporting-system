@@ -23,17 +23,24 @@ function getRecipesForLevel(level){
   return recipes;
 }
 
-function getCompletedExercises(){
-  var completedExercises = new Array();
-  var completedQuestion = FormApp.getActiveForm().getItems()[0];
-  var formResponses = FormApp.getActiveForm().getResponses();
-  for (var j = 0; j < formResponses.length; j++) {
-    var formResponse = formResponses[j];
-    var responseToCompletedQuestion = formResponse.getResponseForItem(completedQuestion).getResponse();//this returns the complete contents of the cell
-    for (var i = 0; i < responseToCompletedQuestion.length; i++)
-      completedExercises.push(responseToCompletedQuestion[i]);
-  }
-  return completedExercises;
+function getCompletedExercises() {
+ var completedExercises = new Array();
+ var form = FormApp.getActiveForm();
+ var formResponses = form.getResponses();
+ for (var i = 0; i < formResponses.length; i++) {
+   var formResponse = formResponses[i];
+   var itemResponses = formResponse.getItemResponses();
+   for (var j = 0; j < itemResponses.length; j++) {
+     var itemResponse = itemResponses[j];
+     if(itemResponse.getItem().getTitle() == "Which exercises did you work on?") {
+       var responseToCompletedQuestion = itemResponse.getResponse(); 
+       for (var k = 0; k < responseToCompletedQuestion.length; k++) {      //a response may include more than one recipe
+         completedExercises.push(responseToCompletedQuestion[k]);                                                  
+       }
+     }
+   }
+ }
+ return completedExercises;
 }
 
 function addCompletionStateToRecipeList(recipeList){
@@ -67,3 +74,4 @@ function getRecipeListURL(level){
   else if (level == 4)
     return "https://docs.google.com/spreadsheets/d/1u3jL0afHPIQvUlmcQDFrpaZ4AEcOlZ7t6_ac8FBHpjI/edit#gid=0";
 }
+
