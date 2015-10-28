@@ -2,8 +2,6 @@ var recipesForCurrentLevel;
 var currentLevel;
 
 function loadFormQuestions(){
-  Logger.log("loadFormQuestions was called :)");
-  
   var classID = FormApp.getActiveForm().getId();
   currentLevel = getCurrentLevel();
   recipesForCurrentLevel = getRecipesForLevel(currentLevel);
@@ -19,50 +17,8 @@ function loadFormQuestions(){
   showNextUpOptions();
   
   insertExercisesList();
-}
-
-function activateTriggers(){
-  var form = FormApp.getActiveForm();
   
-  //for Recipe Loader
-  ScriptApp.newTrigger('loadFormQuestions')
-      .forForm(form)
-      .onFormSubmit()
-      .create();
-  
-  //for Teacher Notifier
-  ScriptApp.newTrigger('respondToFormSubmit')
-      .forForm(form)
-      .onFormSubmit()
-      .create();
-}
-
-function onOpen(e) {
-   Logger.log("Called onOpen for form: " + FormApp.getActiveForm().getTitle());
-   
-   FormApp.getUi()
-       .createAddonMenu()
-       .addItem('Install', 'activateTriggers').addItem('Refresh', 'loadFormQuestions')
-       .addToUi();
-   
-}
-
-function showAlert() {
-  var ui = FormApp.getUi(); // Same variations.
-
-  var result = ui.alert(
-     'Please confirm',
-     'Are you sure you want to continue?',
-      ui.ButtonSet.YES_NO);
-
-  // Process the user's response.
-  if (result == ui.Button.YES) {
-    // User clicked "Yes".
-    ui.alert('Confirmation received.');
-  } else {
-    // User clicked "No" or X in the title bar.
-    ui.alert('Permission denied.');
-  }
+  insertConfirmationMessage();
 }
 
 function setFormTitle(){
@@ -138,4 +94,10 @@ function removeExercisesListItemIfExists() {
         FormApp.getActiveForm().deleteItem(currentItem);
   }
 }
+
+function insertConfirmationMessage(){
+  var form = FormApp.getActiveForm();
+  form.setConfirmationMessage("Thanks! The full class log is here: https://docs.google.com/spreadsheets/d/" +  form.getDestinationId());
+}
+
 
