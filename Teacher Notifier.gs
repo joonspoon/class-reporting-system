@@ -1,4 +1,4 @@
-function respondToFormSubmit(e) {
+function notifyTeachers(e) {
   var form = FormApp.getActiveForm();
     
   var subject = "your class plan for next week";
@@ -18,6 +18,7 @@ function respondToFormSubmit(e) {
      subject: subject,
      htmlBody:  message
    });
+
 }
 
 function getNextWeek(formResponses) {
@@ -31,11 +32,9 @@ function getNextWeek(formResponses) {
 
 function getClassPlan(arrayOfRecipes){
   var classPlan = "";
-
   for (var i = 0; i < arrayOfRecipes.length; i++) {
-    classPlan += getRecipeInfo(arrayOfRecipes[i]) + "<br>";
+    classPlan += getRecipeInfo(cleanUpNotes(arrayOfRecipes[i])) + "<br>";
   }
-    
   return classPlan;
 }
 
@@ -58,7 +57,10 @@ function getRecipeInfo(recipeName) {
       }
     }
   }
-  return recipeInfo;
+  if(recipeInfo) 
+    return recipeInfo;
+  else 
+    return recipeName + " (not found in database)";
 }
 
 function getTeacherEmail(formID){
@@ -79,6 +81,16 @@ function getTeacherEmail(formID){
     }
   }
 }
+
+function cleanUpNotes(testString){
+  var containsDash = testString.indexOf(" - ") > -1;
+  var containsComment = testString.indexOf("// ") > -1;
+  var endsInANumber = isNumeric(testString.substring(testString.indexOf(" - ") + 3));
+  if(containsComment) testString = testString.substring(3, testString.length);
+  if(containsDash & endsInANumber) testString = testString.substring(0, testString.indexOf(" - "));
+  return testString;
+}
+
 
 
 
