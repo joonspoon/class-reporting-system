@@ -11,18 +11,16 @@ function onOpen(e) {
 function activateTriggers(){
   var form = FormApp.getActiveForm();
   
-  //for Recipe Loader
-  ScriptApp.newTrigger('loadFormQuestions')
+  ScriptApp.newTrigger('onFormSubmit')
       .forForm(form)
       .onFormSubmit()
       .create();
-   
-  
-  //for Teacher Notifier
-  ScriptApp.newTrigger('notifyTeachers')
-      .forForm(form)
-      .onFormSubmit()
-      .create();
+
+}
+
+function onFormSubmit(e){
+  loadFormQuestions();
+  notifyTeachers(e);
 }
 
 
