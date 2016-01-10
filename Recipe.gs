@@ -72,6 +72,10 @@ function getRecipeListURL(level){
   else if (level == 3)
     return "https://docs.google.com/spreadsheets/d/1uO27iEOjO8AgzJDjhUAldzXkVHo-ROMbKd49Mk6aIeA/edit#gid=0";
   else if (level == 4)
-    return "https://docs.google.com/spreadsheets/d/1u3jL0afHPIQvUlmcQDFrpaZ4AEcOlZ7t6_ac8FBHpjI/edit#gid=0";
+    return "https://docs.google.com/spreadsheets/d/1u3jL0afHPIQvUlmcQDFrpaZ4AEcOlZ7t6_ac8FBHpjI/edit#gid=0"; 
+  else if (level == 5)
+    return "https://docs.google.com/spreadsheets/d/1uQtyPM3RJ1zbvdr26I3NmA7pCwan5cp73mqmOGI0U_w/edit#gid=0";
+  else if (level == 7)
+    return "https://docs.google.com/spreadsheets/d/1oDAYDekZBffPNCb_V3QcwgLgw_xj4YSBq8CRotCLmMY/edit#gid=0";
 }
 
