@@ -18,7 +18,7 @@ function loadFormQuestions(){
   
   insertExercisesList();
   
-  insertConfirmationMessage();
+  insertConfirmationMessage();  
 }
 
 function setFormTitle(){
