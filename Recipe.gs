@@ -1,7 +1,8 @@
-function Recipe(name, duration) {
+function Recipe(name, duration, optional) {
   this.name = name;
   this.duration = duration;
   this.hasBeenCompleted = false;
+  this.isOptional = optional;
 }
 
 function getRecipesForLevel(level){
@@ -16,7 +17,8 @@ function getRecipesForLevel(level){
       var recipeRow = recipeData[rowIndex];
       var recipeName = recipeRow[0];
       var recipeDuration = recipeRow[2];
-      var newRecipe = new Recipe(recipeName, recipeDuration);
+      var optional = recipeRow[9];
+      var newRecipe = new Recipe(recipeName, recipeDuration, optional);
       recipes.push(newRecipe);
     }
   }
@@ -78,4 +80,3 @@ function getRecipeListURL(level){
   else if (level == 7)
     return "https://docs.google.com/spreadsheets/d/1oDAYDekZBffPNCb_V3QcwgLgw_xj4YSBq8CRotCLmMY/edit#gid=0";
 }
-
