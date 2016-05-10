@@ -3,7 +3,7 @@ function notifyTeachers(e) {
     
   var subject = "your class plan for next week";
   var message = 'Prepared for: ' + form.getTitle();
-  var teacherEmail = "joonspoon@gmail.com," + getTeacherEmail(form.getId());
+  var teacherEmail = "june.clarke@jointheleague.org," + getTeacherEmail(form.getId());
     
   var itemResponses = e.response.getItemResponses();
     message += "<br><br>Exercises planned for next week...";
@@ -90,7 +90,3 @@ function cleanUpNotes(testString){
   if(containsDash & endsInANumber) testString = testString.substring(0, testString.indexOf(" - "));
   return testString;
 }
-
-
-
-
