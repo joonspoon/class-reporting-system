@@ -22,6 +22,3 @@ function onFormSubmit(e){
   loadFormQuestions();
   notifyTeachers(e);
 }
-
-
-
