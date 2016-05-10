@@ -6,7 +6,7 @@ function loadFormQuestions(){
   currentLevel = getCurrentLevel();
   recipesForCurrentLevel = getRecipesForLevel(currentLevel);
   
-  setFormTitle();
+  setFormTitleAndFileName();
   
   setFormDescription();
   
@@ -21,7 +21,7 @@ function loadFormQuestions(){
   insertConfirmationMessage();  
 }
 
-function setFormTitle(){
+function setFormTitleAndFileName(){
   var classID = FormApp.getActiveForm().getId();
   var firstStudentIndex = 7;
   var students = "";
@@ -33,6 +33,9 @@ function setFormTitle(){
   }
   students = students.slice(0, -2);
   FormApp.getActiveForm().setTitle(students);
+  
+  //Set the name of the file in Google Drive
+  DriveApp.getFileById(classID).setName(students);
 }
 
 function setFormDescription(){
@@ -65,6 +68,7 @@ function showNextUpOptions(){
     if(recipe.hasBeenCompleted) checkboxText += "// ";
     checkboxText += recipe.name;
     checkboxText += addTimeToCompleteIfExists(recipe);
+    if(recipe.isOptional) checkboxText += " ~";
     choices.push(checkboxText);
   }
   
@@ -99,5 +103,3 @@ function insertConfirmationMessage(){
   var form = FormApp.getActiveForm();
   form.setConfirmationMessage("Thanks! The full class log is here: https://docs.google.com/spreadsheets/d/" +  form.getDestinationId());
 }
-
-
