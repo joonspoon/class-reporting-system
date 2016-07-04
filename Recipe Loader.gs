@@ -1,28 +1,28 @@
 var recipesForCurrentLevel;
 var currentLevel;
 
-function loadFormQuestions(){
-  var classID = FormApp.getActiveForm().getId();
-  currentLevel = getCurrentLevel();
+function loadFormQuestions(currentForm){
+  var classID = currentForm.getId();
+  currentLevel = getCurrentLevel(classID);
   recipesForCurrentLevel = getRecipesForLevel(currentLevel);
   
-  setFormTitleAndFileName();
+  setFormTitleAndFileName(currentForm);
   
-  setFormDescription();
+  setFormDescription(currentForm);
   
-  showRecipeNamesAsCheckboxes();
+  showRecipeNamesAsCheckboxes(currentForm);
   
-  addCompletionStateToRecipeList(recipesForCurrentLevel);
+  addCompletionStateToRecipeList(recipesForCurrentLevel, currentForm);
   
-  showNextUpOptions();
+  showNextUpOptions(currentForm);
   
-  insertExercisesList();
+  insertExercisesList(currentForm);
   
-  insertConfirmationMessage();  
+  insertConfirmationMessage(currentForm);  
 }
 
-function setFormTitleAndFileName(){
-  var classID = FormApp.getActiveForm().getId();
+function setFormTitleAndFileName(currentForm){
+  var classID = currentForm.getId();
   var firstStudentIndex = 7;
   var students = "";
   var classData = getClassData(classID);
@@ -32,20 +32,20 @@ function setFormTitleAndFileName(){
       students += studentName + ", ";
   }
   students = students.slice(0, -2);
-  FormApp.getActiveForm().setTitle(students);
+  currentForm.setTitle(students);
   
   //Set the name of the file in Google Drive
   DriveApp.getFileById(classID).setName(students);
 }
 
-function setFormDescription(){
-  var classID = FormApp.getActiveForm().getId();
+function setFormDescription(currentForm){
+  var classID = currentForm.getId();
   var classData = getClassData(classID);
-  FormApp.getActiveForm().setDescription("Level " + classData[2] + " - " + classData[3] + " & " + classData[5]);
+  currentForm.setDescription("Level " + classData[2] + " - " + classData[3] + " & " + classData[5]);
 }
 
-function showRecipeNamesAsCheckboxes(){
-  var completedQuestion = FormApp.getActiveForm().getItems()[0].asCheckboxItem();
+function showRecipeNamesAsCheckboxes(currentForm){
+  var completedQuestion = currentForm.getItems()[0].asCheckboxItem();
   completedQuestion.setTitle('Which exercises did you work on?');
   
   var choices = new Array();
@@ -56,9 +56,9 @@ function showRecipeNamesAsCheckboxes(){
   completedQuestion.setChoiceValues(choices);  
 }
 
-function showNextUpOptions(){
+function showNextUpOptions(currentForm){
   
-  var plannedQuestion = FormApp.getActiveForm().getItems()[1].asCheckboxItem();
+  var plannedQuestion = currentForm.getItems()[1].asCheckboxItem();
   plannedQuestion.setTitle('Which exercises are you planning for next week?');
   
   var choices = new Array();
@@ -82,24 +82,23 @@ function addTimeToCompleteIfExists(recipe){
     return "";
 }
 
-function insertExercisesList(){
-  removeExercisesListItemIfExists();
+function insertExercisesList(currentForm){
+  removeExercisesListItemIfExists(currentForm);
   
-  var section = FormApp.getActiveForm().addSectionHeaderItem();
+  var section = currentForm.addSectionHeaderItem();
   section.setTitle("Click here for the full list of exercises for level " + currentLevel + ":");
   section.setHelpText(getRecipeListURL(currentLevel));
 }
 
-function removeExercisesListItemIfExists() {
-  var formItems = FormApp.getActiveForm().getItems();
+function removeExercisesListItemIfExists(currentForm) {
+  var formItems = currentForm.getItems();
   for(var i = 0; i < formItems.length; i++){
     var currentItem = formItems[i];
     if(currentItem.getType() == "SECTION_HEADER")
-        FormApp.getActiveForm().deleteItem(currentItem);
+        currentForm.deleteItem(currentItem);
   }
 }
 
-function insertConfirmationMessage(){
-  var form = FormApp.getActiveForm();
-  form.setConfirmationMessage("Thanks! The full class log is here: https://docs.google.com/spreadsheets/d/" +  form.getDestinationId());
+function insertConfirmationMessage(currentForm){
+  form.setConfirmationMessage("Thanks! The full class log is here: https://docs.google.com/spreadsheets/d/" +  currentForm.getDestinationId());
 }
