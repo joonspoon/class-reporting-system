@@ -25,9 +25,8 @@ function getRecipesForLevel(level){
   return recipes;
 }
 
-function getCompletedExercises() {
+function getCompletedExercises(form) {
  var completedExercises = new Array();
- var form = FormApp.getActiveForm();
  var formResponses = form.getResponses();
  for (var i = 0; i < formResponses.length; i++) {
    var formResponse = formResponses[i];
@@ -45,16 +44,17 @@ function getCompletedExercises() {
  return completedExercises;
 }
 
-function addCompletionStateToRecipeList(recipeList){
+function addCompletionStateToRecipeList(recipeList, currentForm){
+  var completedExercises = getCompletedExercises(currentForm);
   for (var i = 0; i < recipeList.length; i++) {
     var currentRecipe = recipeList[i];
-    if(hasBeenCompleted(currentRecipe.name))
+    if(hasBeenCompleted(completedExercises, currentRecipe.name))
        currentRecipe.hasBeenCompleted = true;
   }
 }
        
-function hasBeenCompleted(recipeName){
-  return arrayContains(getCompletedExercises(), recipeName);
+function hasBeenCompleted(completedExercises, recipeName){
+  return arrayContains(completedExercises, recipeName);
 }
        
 function arrayContains(array, lookingFor){
