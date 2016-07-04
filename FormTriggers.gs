@@ -1,5 +1,7 @@
-function onOpen(e) {
-   Logger.log("Called onOpen for form: " + FormApp.getActiveForm().getTitle());
+function onOpen(openEvent) {
+   var thisForm = openEvent.source;
+  
+   Logger.log("Triggered onOpen for form: " + thisForm.getTitle());
    
    FormApp.getUi()
        .createAddonMenu()
@@ -15,10 +17,15 @@ function activateTriggers(){
       .forForm(form)
       .onFormSubmit()
       .create();
-
 }
 
-function onFormSubmit(e){
-  loadFormQuestions();
-  notifyTeachers(e);
+function onFormSubmit(submitEvent){
+  var thisForm = submitEvent.source;
+  Logger.log("Triggered onFormSubmit for: " + thisForm.getTitle());
+  
+  Logger.log("Notifying teachers...");
+  notifyTeachers(submitEvent);
+  
+  Logger.log("Loading checkboxes...");
+  loadFormQuestions(thisForm);
 }
