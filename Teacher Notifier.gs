@@ -1,16 +1,16 @@
-function notifyTeachers(e) {
-  var form = FormApp.getActiveForm();
-    
+function notifyTeachers(submitEvent) {
+  var currentForm = submitEvent.source;
+  
   var subject = "your class plan for next week";
-  var message = 'Prepared for: ' + form.getTitle();
-  var teacherEmail = "june.clarke@jointheleague.org," + getTeacherEmail(form.getId());
+  var message = 'Prepared for: ' + currentForm.getTitle();
+  var teacherEmail = "june.clarke@jointheleague.org," + getTeacherEmail(currentForm.getId());
     
-  var itemResponses = e.response.getItemResponses();
+  var itemResponses = submitEvent.response.getItemResponses();
     message += "<br><br>Exercises planned for next week...";
     message += "<br>" + getNextWeek(itemResponses);
   
     message += "<br><br>Please fill out the <a href='"
-    message += form.getPublishedUrl()
+    message += currentForm.getPublishedUrl()
     message += "'>class report form</a> after class :)"; 
     
     MailApp.sendEmail({
@@ -82,11 +82,19 @@ function getTeacherEmail(formID){
   }
 }
 
-function cleanUpNotes(testString){
+function cleanUpNotes(testString) {
+  
+  /* remove optional tilda if it exists */
+  var containsOptionalTilda = testString.indexOf(" ~") > -1;
+  if(containsOptionalTilda) {
+     testString = testString.substring(0, testString.indexOf(" ~")); 
+  }
+  
   var containsDash = testString.indexOf(" - ") > -1;
   var containsComment = testString.indexOf("// ") > -1;
   var endsInANumber = isNumeric(testString.substring(testString.indexOf(" - ") + 3));
   if(containsComment) testString = testString.substring(3, testString.length);
   if(containsDash & endsInANumber) testString = testString.substring(0, testString.indexOf(" - "));
+
   return testString;
 }
